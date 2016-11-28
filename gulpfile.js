@@ -8,33 +8,28 @@ const webpackConfig = require('./webpack.config.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
+const open = require('gulp-open');
 const argv = require('yargs').argv;
 
-gulp.task('clean', function (done) {
+const port = 8001;
+
+gulp.task('clean', (done) => {
   del(['www/**', '!www'])
-    .then(function () {
+    .then(() => {
       done();
     });
 });
 
-gulp.task('clean', function (done) {
-  del(['www/**', '!www'])
-    .then(function () {
-      done();
-    });
-});
-
-gulp.task('webserver', function () {
-  connect.server({
-    root: 'www',
-    port: '8081',
-    livereload: false,
-  });
+gulp.task('open-webpack-server-url', () => {
+  gulp.src(__filename)
+    .pipe(open({
+      uri: `http://localhost:${port}/index.html`,
+    }));
 });
 
 function configureEntryAndHtml(config, entryPaths) {
   config.entry = config.entry || {};
-  Object.keys(entryPaths).map(function (key) {
+  Object.keys(entryPaths).map((key) => {
     const entryPath = entryPaths[key];
     // var jsKey = key + '/' + key.split('/').pop();
     if (entryPath.js) {
@@ -86,7 +81,7 @@ function getBuildWebpackConfig(entryPaths) {
   return config;
 }
 
-gulp.task('webpack-dev-server', function () {
+gulp.task('webpack-dev-server', () => {
   const entryPaths = {};
   return gulp.src(['src/**/index.html', 'src/**/index.js'], { read: false })
     .pipe(new Transform({
@@ -103,7 +98,7 @@ gulp.task('webpack-dev-server', function () {
         return callback(null, file);
       },
     }))
-    .on('finish', function () {
+    .on('finish', () => {
       const config = getDevWebpackConfig(entryPaths);
       new WebpackDevServer(webpack(config), {
         inline: true,
@@ -111,13 +106,13 @@ gulp.task('webpack-dev-server', function () {
         stats: {
           colors: true,
         },
-      }).listen(8001, '0.0.0.0', function (err) {
+      }).listen(port, '0.0.0.0', (err) => {
         if (err) throw new gutil.PluginError('webpack-dev-server', err);
       });
     });
 });
 
-gulp.task('build', function () {
+gulp.task('build', () => {
   const entryPaths = {};
   return gulp.src(['src/**/index.html', 'src/**/index.js'], { read: false })
     .pipe(new Transform({
@@ -134,9 +129,9 @@ gulp.task('build', function () {
         return callback(null, file);
       },
     }))
-    .on('finish', function () {
+    .on('finish', () => {
       const config = getBuildWebpackConfig(entryPaths);
-      webpack(config, function (err) {
+      webpack(config, (err) => {
         if (err) throw new gutil.PluginError('webpack:build', err);
       });
     });
@@ -144,4 +139,4 @@ gulp.task('build', function () {
 
 gulp.task('bundle', ['clean', 'build']);
 
-gulp.task('default', ['webpack-dev-server']);
+gulp.task('default', ['webpack-dev-server', 'open-webpack-server-url']);
