@@ -1,0 +1,14 @@
+@import "variable";
+
+.background-primary {
+  background-color: $primary-color;
+}
+.text-primary {
+  color: $primary-color;
+}
+.bar.bar-nav .title {
+  color: white;
+}
+.bar.bar-nav {
+  background-color: $primary-color;
+}

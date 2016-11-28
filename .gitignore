@@ -1,0 +1,15 @@
+/node_modules
+npm-debug.log
+www
+target
+generated-sources
+.settings
+.classpath
+.project
+*local
+*.orig
+*.war
+/bin/
+.externalToolBuilders
+maven/src/main/webapp/*
+!maven/src/main/webapp/WEB-INF

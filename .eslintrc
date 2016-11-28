@@ -1,0 +1,39 @@
+{
+  'extends': 'airbnb',
+  'parser': 'babel-eslint',
+  "globals": {
+    "$": true,
+  },
+  'rules': {
+    'max-len': 'off',
+    'no-shadow': 'off',
+    'global-require': 'off',
+    'no-underscore-dangle': ['error', { 'allowAfterThis': false, 'allow': ['_czc', '_active'] }],
+    'consistent-return': 'off',
+    'react/sort-comp': [2, {
+      order: [
+        '/^props$/',
+        'static-methods',
+        'lifecycle',
+        '/^on.+$/',
+        '/^(get|set)(?!(InitialState$|DefaultProps$|ChildContext$)).+$/',
+        'everything-else',
+        '/^render.+$/',
+        'render'
+      ],
+    }],
+    'no-param-reassign': 'off',
+    'no-console':'off',
+    'func-names': 'off',
+    'strict': 'off',
+    'no-alert': 'off',
+    'eqeqeq': 'off'
+  },
+  'settings': {
+    'import/resolver': {
+      'webpack': {
+        'config': 'webpack.config.js'
+      }
+    }
+  }
+}
